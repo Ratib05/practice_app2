@@ -36,8 +36,14 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Expanded(child: TextField(controller: _controller,
-          )
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Type Cyber incident here',
+              ),
+            ),
           ),
           // Expanded allows the ListView to take available space
           Expanded(
@@ -45,20 +51,23 @@ class _HomePageState extends State<HomePage> {
               itemCount: incidents.length, // Number of list items
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: const Icon(Icons.warning, color: Colors.red), // Icon at start
+                  leading: const Icon(
+                    Icons.warning,
+                    color: Colors.red,
+                  ), // Icon at start
                   title: Text(incidents[index]), // Display incident message
                 );
               },
             ),
-            
           ),
-      ]
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Adds a new incident when button is pressed
           setState(() {
-            incidents.add('New incident');
+            incidents.add(_controller.text);
+            _controller.clear();
           });
         },
         child: const Icon(Icons.add), // Plus icon
