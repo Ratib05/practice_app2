@@ -27,6 +27,8 @@ class _HomePageState extends State<HomePage> {
     'Phishing attempt blocked',
   ];
 
+  int? _hoveredIndex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,12 +52,42 @@ class _HomePageState extends State<HomePage> {
             child: ListView.builder(
               itemCount: incidents.length, // Number of list items
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(
-                    Icons.warning,
-                    color: Colors.red,
-                  ), // Icon at start
-                  title: Text(incidents[index]), // Display incident message
+                return MouseRegion(
+                  onEnter: (_) {
+                    setState(() {
+                      _hoveredIndex = index;
+                    });
+                  },
+                  onExit: (_) {
+                    setState(() {
+                      _hoveredIndex = null;
+                    });
+                  },
+
+                  child: Dismissible(
+                    key: Key(incidents[index]),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      setState(() {
+                        incidents.removeAt(index);
+                      });
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Container(
+                      color: _hoveredIndex == index
+                          ? Colors.blue.shade100
+                          : null,
+                      child: ListTile(
+                        leading: const Icon(Icons.warning, color: Colors.red),
+                        title: Text(incidents[index]),
+                      ),
+                    ),
+                  ),
                 );
               },
             ),
