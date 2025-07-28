@@ -20,6 +20,19 @@ class _HomePageState extends State<HomePage> {
   // Controller for a future input field (not used yet)
   final TextEditingController _controller = TextEditingController();
 
+  // function to choose tile icon and colour
+  Widget _getIcon(String message) {
+    if (message.toLowerCase().contains('ransomware')) {
+      return const Icon(Icons.block, color: Colors.black);
+    } else if (message.toLowerCase().contains('phishing')) {
+      return const Icon(Icons.email, color: Colors.orange);
+    } else if (message.toLowerCase().contains('unauthorized')) {
+      return const Icon(Icons.lock_open, color: Colors.deepPurple);
+    } else {
+      return const Icon(Icons.warning, color: Colors.red);
+    }
+  }
+
   // List of incidents to display
   final List<String> incidents = [
     'Malware found in email',
@@ -34,7 +47,18 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cyber Tracker'), // App title
-        backgroundColor: Colors.blue, // App bar color
+        backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_sweep),
+            tooltip: 'clear all',
+            onPressed: () {
+              setState(() {
+                incidents.clear();
+              });
+            },
+          ),
+        ], // App bar color
       ),
       body: Column(
         children: [
@@ -83,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                           ? Colors.blue.shade100
                           : null,
                       child: ListTile(
-                        leading: const Icon(Icons.warning, color: Colors.red),
+                        leading: _getIcon(incidents[index]),
                         title: Text(incidents[index]),
                       ),
                     ),
