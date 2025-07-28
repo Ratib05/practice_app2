@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// So we can turn lists into strings
 
 void main() {
   runApp(
@@ -41,6 +42,8 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int? _hoveredIndex;
+
+  //
 
   @override
   Widget build(BuildContext context) {
